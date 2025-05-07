@@ -1,11 +1,15 @@
 import hashlib
 
-class Alphabet:
-    ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    LOWERCASE_ALPHABET = ALPHABET.lower()
-    DIGITS = "0123456789"
-
 class CaesarCypher:
+    class Alphabet:
+        ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        LOWERCASE_ALPHABET = ALPHABET.lower()
+        SPECIAL_CZECH = "ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ"
+        SPECIAL_CZECH_LOWER = SPECIAL_CZECH.lower()
+        SPACE = " "
+        SYMBOLS = ".!?,;:()[]{}<>"
+        DIGITS = "0123456789"
+
     @staticmethod
     def encrypt(message:str, alphabet:str, shift:int) -> str:
         """
@@ -41,6 +45,40 @@ class CaesarCypher:
             else:
                 decrypted_message += char
         return decrypted_message
+    
+    @staticmethod
+    def encrypt_file(file_path_from:str, file_path_to:str, alphabet: str, shift:int) -> None:
+        """
+        Encrypts a file using the Caesar cipher algorithm.
+        :param file_path_from: The path to the file to encrypt.
+        :param file_path_to: The path to save the encrypted file.
+        :param alphabet: The alphabet to use for encryption.
+        :param shift: The number of positions to shift each letter.
+        """
+        with open(file_path_from, 'r', encoding='utf-8') as f:
+            data = f.read()
+        
+        encrypted_data = CaesarCypher.encrypt(data, alphabet, shift)
+        
+        with open(file_path_to, 'w', encoding='utf-8') as f:
+            f.write(encrypted_data)
+    
+    @staticmethod
+    def decrypt_file(file_path_from:str, file_path_to:str, alphabet: str, shift:int) -> None:
+        """
+        Decrypts a file using the Caesar cipher algorithm.
+        :param file_path_from: The path to the file to decrypt.
+        :param file_path_to: The path to save the decrypted file.
+        :param alphabet: The alphabet to use for decryption.
+        :param shift: The number of positions to shift each letter.
+        """
+        with open(file_path_from, 'r', encoding='utf-8') as f:
+            data = f.read()
+        
+        decrypted_data = CaesarCypher.decrypt(data, alphabet, shift)
+        
+        with open(file_path_to, 'w', encoding='utf-8') as f:
+            f.write(decrypted_data)
 
 class AES:
     class SBox:
@@ -328,8 +366,37 @@ class AES:
 
         return bytes(decrypted_message).decode('ascii').rstrip('\x00')
 
-enc = AES.encrypt("Hello, World! How is everyone doing?", "password", 16)
-print(enc)
-dec = AES.decrypt(enc, "password", 16)
-print(dec)
+    @staticmethod
+    def encrypt_file(file_path_from: str, file_path_to: str, password: str, length: int = 16) -> None:
+        """
+        Encrypts a file using AES encryption.
+        :param file_path_from: The path to the file to encrypt.
+        :param file_path_to: The path to save the encrypted file.
+        :param password: The password to use for key generation.
+        :param length: The length of the key (16, 24, or 32 bytes).
+        """
+        with open(file_path_from, 'rb') as f:
+            data = f.read()
+        
+        encrypted_data = AES.encrypt(data.decode('ascii'), password, length)
+        
+        with open(file_path_to, 'wb') as f:
+            f.write(bytes(encrypted_data))
     
+    @staticmethod
+    def decrypt_file(file_path_from: str, file_path_to: str, password: str, length: int = 16) -> None:
+        """
+        Decrypts a file using AES encryption.
+        :param file_path_from: The path to the file to decrypt.
+        :param file_path_to: The path to save the decrypted file.
+        :param password: The password to use for key generation.
+        :param length: The length of the key (16, 24, or 32 bytes).
+        """
+        with open(file_path_from, 'rb') as f:
+            data = f.read()
+        
+        decrypted_data = AES.decrypt(list(data), password, length)
+        
+        with open(file_path_to, 'w', encoding='utf-8') as f:
+            f.write(decrypted_data)
+

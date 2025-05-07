@@ -17,17 +17,36 @@ Implementovat **2 vybrané algoritmy** = **1 algoritmus klasické kryptografie**
 ### Příklad
 ```python
 # Kód ze souboru ZKR.py ...
-original = ""
+alphabet = Alphabet.ALPHABET + Alphabet.SPECIAL_CZECH + Alphabet.LOWERCASE_ALPHABET + Alphabet.SPECIAL_CZECH_LOWER + Alphabet.SPACE + Alphabet.SYMBOLS + Alphabet.DIGITS
+enc = CaesarCypher.encrypt("Hello, World! How is everyone doing?", alphabet, 16)
+print(enc) # Xuččě51Ůěóčt31Xěů1yř1uúuóžěéu1těyéw4
+dec = CaesarCypher.decrypt(enc, alphabet, 16)
+print(dec) # Hello, World! How is everyone doing?
+dec_wrong = CaesarCypher.decrypt(enc, alphabet, 17)
+print(dec_wrong) # Gdkkn?žVnqkc.žGnvžhrždudqxnmdžcnhmf!
 ```
 
-2. AES (moderní kryptografie)
+# AES (moderní kryptografie)
 
-Vznik a autoři: AES (Advanced Encryption Standard) byl vyvinut v roce 2001 Národním institutem standardů a technologie (NIST) jako náhrada za starší DES. AES byl navržen belgickými kryptografy Vincentem Rijmenem a Joanem Daemenem.
+**Vznik a autoři**: AES (Advanced Encryption Standard) byl vyvinut v roce 2001 Národním institutem standardů a technologie (NIST) jako náhrada za starší DES. AES byl navržen belgickými kryptografy Vincentem Rijmenem a Joanem Daemenem.
 
-Princip: AES je bloková šifra, která šifruje data v blocích o velikosti 128 bitů. Používá tajný klíč, jehož délka může být 128, 192 nebo 256 bitů. AES využívá několik šifrovacích kroků, jako je substituce, permutace a smíchání.
+**Princip**: AES je bloková šifra, která šifruje data v blocích o velikosti 128 bitů. Používá tajný klíč, jehož délka může být 128, 192 nebo 256 bitů. AES využívá několik šifrovacích kroků, jako je substituce, permutace a smíchání.
 
-Použití: AES je v současnosti jedním z nejpoužívanějších algoritmů pro šifrování, a to jak v komerční sféře, tak i v různých vládních aplikacích. Používá se například v HTTPS pro šifrování webového provozu.
+**Použití**: AES je v současnosti jedním z nejpoužívanějších algoritmů pro šifrování, a to jak v komerční sféře, tak i v různých vládních aplikacích. Používá se například v HTTPS pro šifrování webového provozu.
 
-Porušení protokolu: Pokud útočník získá tajný klíč, může dešifrovat všechny zašifrované zprávy. AES je však odolný proti většině běžných útoků, pokud je správně implementován a používán s dostatečně silným klíčem.
+**Porušení protokolu**: Pokud útočník získá tajný klíč, může dešifrovat všechny zašifrované zprávy. AES je však odolný proti většině běžných útoků, pokud je správně implementován a používán s dostatečně silným klíčem.
 
-Příklad: Zašifrování a dešifrování textu pomocí AES se obvykle provádí pomocí knihoven v programovacích jazycích, jako je Python nebo C++.
+### Příklad
+
+```python
+# Kód ze souboru ZKR.py ...
+enc = AES.encrypt("Hello, World! How is everyone doing?", "password", 16)
+print(enc) # [74, 35, 242, 12, 56, 243, 70, 133, 156, 175, 107, 1, 74, 190, 25, 74, 234, 216, 97, 127, 55, 113, 2, 165, 100, 179, 215, 2, 70, 176, 215, 132, 130, 96, 18, 63, 40, 21, 195, 76, 222, 113, 5, 214, 109, 155, 131, 213]
+dec = AES.decrypt(enc, "password", 16)
+print(dec) # Hello, World! How is everyone doing?
+dec_wrong = AES.decrypt(enc, "wrong password", 16)
+print(dec_wrong)
+# Bt@j~[_
+#        DC@AlN}FGbPqqhS{-1Joc(
+# r\<e
+```
