@@ -351,7 +351,7 @@ class AES:
         :return: The encrypted message.
         """
         keys = AES.Key.key_schedule(password, length)
-        byte_message = list(bytes(message.encode('ascii')))
+        byte_message = list(bytes(message.encode('utf-8')))
         for i in range(len(byte_message) % length, length):
             byte_message.append(0)
 
@@ -378,7 +378,7 @@ class AES:
         with open(file_path_from, 'rb') as f:
             data = f.read()
         
-        encrypted_data = AES.encrypt(data.decode('ascii'), password, length)
+        encrypted_data = AES.encrypt(data.decode('utf-8'), password, length)
         
         with open(file_path_to, 'wb') as f:
             f.write(bytes(encrypted_data))
@@ -400,3 +400,15 @@ class AES:
         with open(file_path_to, 'w', encoding='utf-8') as f:
             f.write(decrypted_data)
 
+AES.encrypt_file('cat_cz.txt', 'cat_cz_enc.enc', 'password', 16)
+AES.decrypt_file('cat_cz_enc.enc', 'cat_cz_dec_correct.txt', 'password', 16)
+AES.decrypt_file('cat_cz_enc.enc', 'cat_cz_dec_wrong.txt', 'passwore', 16)
+
+alphabet = CaesarCypher.Alphabet.ALPHABET + \
+    CaesarCypher.Alphabet.LOWERCASE_ALPHABET + \
+    CaesarCypher.Alphabet.SPACE + \
+    CaesarCypher.Alphabet.SYMBOLS + \
+    CaesarCypher.Alphabet.DIGITS
+CaesarCypher.encrypt_file('cat_en.txt', 'cat_en_enc.txt', alphabet, 3)
+CaesarCypher.decrypt_file('cat_en_enc.txt', 'cat_en_dec_correct.txt', alphabet, 3)
+CaesarCypher.decrypt_file('cat_en_enc.txt', 'cat_en_dec_wrong.txt', alphabet, 4)
