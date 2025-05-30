@@ -50,3 +50,7 @@ print(dec_wrong)
 #        DC@AlN}FGbPqqhS{-1Joc(
 # r\<e
 ```
+
+# TODO 
+Base64 pro zobrazení dešifrovaného textu s pomocí špatného hesla. (Nebo pro vše, test)
+Více odstavců textu.
